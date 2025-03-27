@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System zarządzania kinem - Łukasz Kuś</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>System zarządzania kinem</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">O mnie</a></li>
+                <li><a href="projects.html">Moje projekty</a></li>
+                <li><a href="interests.html">Zainteresowania</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <article class="project-details">
+            <div class="project-intro">
+                <picture>
+                    <source srcset="img/cinema/cinema_1.jpg" media="(min-width: 768px)">
+                    <img src="img/cinema/lq/cinema_1.jpg" alt="System zarządzania kinem" class="responsive-img">
+                </picture>
+            </div>
+            
+            <h2>System zarządzania kinem</h2>
+            <p>Projekt aplikacji webowej do zarządzania rezerwacjami w kinie, umożliwiający klientom przeglądanie dostępnych seansów, wybór miejsc oraz rezerwację biletów</p>
+            
+            <section class="technologies">
+                <h3>Wykorzystane technologie</h3>
+                <ul>
+                    <li>HTML5 i CSS3 dla interfejsu użytkownika</li>
+                    <li>JavaScript do interakcji z użytkownikiem</li>
+                    <li>PHP dla logiki aplikacji</li>
+                    <li>MariaDB do przechowywania danych</li>
+                </ul>
+            </section>
+            
+            <section class="code-sample">
+                <h3>Przykładowy kod - algorytm sprawdzania dostępności</h3>
+                <pre><code class="copyable">
+/**
+ * Fragment kodu PHP rezerwujący miejsca na seansie
+ */
+ if (isset($_COOKIE['booked_seats'])) {
+    $booked_seats = explode(",", $_COOKIE['booked_seats']);
+    setcookie("booked_seats", "", time() - 3600, "/");
+    $user_id = $user->getID();
+
+    DBHelper::beginTransaction();
+    try{
+        foreach ($booked_seats as $seat) {
+            if (DBHelper::callFunction("is_seat_available", [$showing_id, $seat])) {
+                DBHelper::executeQuery("INSERT INTO ticket (showing_id, user_id, seat_number) VALUES (?, ?, ?)", [$showing_id, $user_id, $seat]);
+            } else {
+                DBHelper::rollbackTransaction();
+                header("Location: book_seats.php?id=$showing_id");
+                exit();
+            }
+        }
+        DBHelper::commitTransaction();
+        header("Location: user_panel.php");
+        exit();
+    } catch (Exception $e) {
+        DBHelper::rollbackTransaction();
+    }
+}
+                </code></pre>
+            </section>
+            
+            <section class="learnings">
+                <h3>Wnioski i nauka</h3>
+                <p>Podczas realizacji projektu nauczyłem się pracy z bazami danych, zarządzania sesjami użytkowników oraz tworzenia interaktywnych formularzy w HTML i JavaScript.</p>
+                <p>
+                    Z rzeczy które zmieniłbym tworząc ten projekt ponownie, to zdecydowanie użycie wzorca MVC, który ułatwiłby mi zarządzanie kodem i jego rozbudowę.
+                    Dodatkowo pomyślałbym nad użyciem frameworka, np. Laravel, który znacznie przyspieszyłby proces tworzenia aplikacji.
+                </p>
+            </section>
+
+            <section class="project-gallery">
+                <h3>Galeria</h3>
+                <picture>
+                    <source srcset="img/cinema/cinema_2.jpg" media="(min-width: 768px)">
+                    <img src="img/cinema/lq/cinema_2.jpg" alt="System zarządzania kinem" class="responsive-img">
+                </picture>
+
+                <picture>
+                    <source srcset="img/cinema/cinema_3.jpg" media="(min-width: 768px)">
+                    <img src="img/cinema/lq/cinema_3.jpg" alt="System zarządzania kinem" class="responsive-img">
+                </picture>
+            </section>
+            
+        </article>
+        
+        <aside class="project-nav">
+            <h3>Inne projekty</h3>
+            <ul>
+                <li><a href="project2.html">Chińskie szachy online</a></li>
+                <li><a href="project3.html">Linuxowy shell</a></li>
+            </ul>
+        </aside>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Łukasz Kuś </p>
+    </footer>
+</body>
+</html>

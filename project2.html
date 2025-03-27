@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chińskie szachy online - Łukasz Kuś</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Chińskie szachy online</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">O mnie</a></li>
+                <li><a href="projects.html">Moje projekty</a></li>
+                <li><a href="interests.html">Zainteresowania</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <article class="project-details">
+            <div class="project-intro">
+                <picture>
+                    <source srcset="img/checkers/checkers_1.jpg" media="(min-width: 768px)">
+                    <img src="img/checkers/lq/checkers_1.jpg" alt="Chińskie szachy online" class="responsive-img">
+                </picture>
+            </div>
+            <h2>Chińskie szachy online</h2>
+            <p>Projekt aplikacji desktopowej do gry w chińskie szachy online, umożliwiający grę z innymi użytkownikami oraz z komputerem. Aplikacja została zaimplementowana w języku Java z wykorzystaniem biblioteki JavaFX.</p>
+            <p>Możliwości aplikacji:</p>
+            <ul>
+                <li>Możliwość gry z innymi użytkownikami</li>
+                <li>Możliwość gry z botem</li>
+                <li>Możliwość zapisywania i wczytywania gier z bazy danych</li>
+                <li>Dwa warianty rozgrywki: standardowy i "Fast-Paced"</li>
+            </ul>
+            
+            <section class="technologies">
+                <h3>Wykorzystane technologie</h3>
+                <ul>
+                    <li>Java dla logiki aplikacji</li>
+                    <li>JavaFX dla interfejsu graficznego klienta</li>
+                    <li>Spring do komunikacji z bazą danych</li>
+                    <li>Jackson do serializacji obiektów po sieci</li>
+                    <li>JUnit do testów jednostkowych</li>
+                </ul>
+            </section>
+            
+            <section class="code-sample">
+                <h3>Przykładowy kod - kalkulacja dostępnych ruchów w wariancie przyspieszonym (Fast-Paced)</h3>
+                <code class="copyable">
+@Override
+public ArrayList&lt;Position> getReachableJumps(Position position) {
+    ArrayList&lt;Position> jumps = new ArrayList&lt;>();
+    int x = position.getX();
+    int y = position.getY();
+    int maxDistance = board.getSize() + 1;
+    for (Position dir : DIRECTIONS) {
+        Position firstPawn = null;
+        int pawnDist = 1;
+        for(int dist = 1; dist &lt;= maxDistance; dist++){
+            Position potentialPawn = new Position(x + dist * dir.getX(), y + dist * dir.getY());
+            if(board.isOccupied(potentialPawn)){
+                firstPawn = potentialPawn;
+                pawnDist = dist;
+                break;
+            }
+        }
+        if(firstPawn == null){
+            continue;
+        }
+        boolean isJumpable = true;
+        for(int behind = 1; behind &lt;= pawnDist; behind++){
+            Position potentialPawn = new Position(firstPawn.getX() + behind * dir.getX(), firstPawn.getY() + behind * dir.getY());
+            if(board.isOccupied(potentialPawn)){
+                isJumpable = false;
+                break;
+            }
+        }
+        if(isJumpable){
+            jumps.add(new Position(x + 2 * pawnDist * dir.getX(), y + 2 * pawnDist * dir.getY()));
+        }
+    }
+    return jumps;
+}
+                </code>
+            </section>
+            
+            <section class="learnings">
+                <h3>Wnioski i nauka</h3>
+                <p>Projekt ten był dla mnie okazją do nauki wielu nowych technologii i umiejętności. Wymagał on połączenia dużej ilości kodu w jedną spójną całość, co pozwoliło mi na lepsze zrozumienie zasad programowania obiektowego oraz architektury aplikacji.</p>
+            </section>
+        </article>
+        
+        <aside class="project-nav">
+            <h3>Inne projekty</h3>
+            <ul>
+                <li><a href="project1.html">System zarządzania kinem</a></li>
+                <li><a href="project3.html">Linuxowy shell</a></li>
+            </ul>
+        </aside>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Łukasz Kuś </p>
+    </footer>
+</body>
+</html>

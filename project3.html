@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linuxowy shell - Łukasz Kuś</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Linuxowy shell</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">O mnie</a></li>
+                <li><a href="projects.html">Moje projekty</a></li>
+                <li><a href="interests.html">Zainteresowania</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <main>
+        <article class="project-details">
+            <div class="project-intro">
+                <picture>
+                    <source srcset="img/shell/shell_1.jpg" media="(min-width: 768px)">
+                    <img src="img/shell/lq/shell_1.jpg" alt="Linuxowy shell" class="responsive-img">
+                </picture>
+            </div>
+            <h2>Linuxowy shell</h2>
+            <p>Prosty Linuxowy shell napisany w języku C z obsługą pipe'ów i przekierowań.</p>
+            
+            <section class="technologies">
+                <h3>Wykorzystane funkcjonalności</h3>
+                <ul>
+                    <li>Obsługa poleceń wbudowanych (np. cd, echo, pwd)</li>
+                    <li>Obsługa pipe'ów i przekierowań</li>
+                    <li>Obsługa sygnałów systemowych</li>
+                    <li>Obsługa niektórych skrótów klawiszowych, np. Ctrl+C</li>
+                    <li>Obsługa uruchamiania programów w tle</li>
+                </ul>
+            </section>
+            
+            <section class="code-sample">
+                <h3>Przykładowy kod - parsowanie komend</h3>
+                <pre><code class="copyable">
+Command* parse_commands(char **args) {
+    Command *commands = malloc(MAX_CMD_COUNT * sizeof(Command));
+    int command_index = 0;
+    int arg_index = 0;
+
+    commands[command_index].args = malloc(MAX_ARG_COUNT * sizeof(char*));
+
+    for (int i = 0; args[i] != NULL; i++) {
+        if(strcmp(args[i], "&lt;") == 0) {
+            i++;
+            commands[command_index].input_file = args[i];
+        } else if (strcmp(args[i], ">") == 0) {
+            i++;
+            commands[command_index].output_file = args[i];
+        } else if (strcmp(args[i], "2>") == 0) {
+            i++;
+            commands[command_index].error_file = args[i];
+        } else if (strcmp(args[i], "&") == 0) {
+            commands[command_index].run_in_bg = 1;
+        } else if (strcmp(args[i], "|") == 0) {
+            commands[command_index].args[arg_index] = NULL;
+            command_index++;
+            arg_index = 0;
+            commands[command_index].args = malloc(MAX_ARG_COUNT * sizeof(char*));
+        } else {
+            commands[command_index].args[arg_index] = args[i];
+            arg_index++;
+        }
+    }
+
+    commands[command_index].args[arg_index] = NULL;
+    commands[command_index + 1].args = NULL;
+
+    return commands;
+}
+                </code></pre>
+            </section>
+            
+            <section class="learnings">
+                <h3>Wnioski i nauka</h3>
+                <p>
+                    Projekt ten pozwolił mi na lepsze zrozumienie działania systemów operacyjnych oraz nauczył mnie pracy z niskopoziomowymi interfejsami systemowymi.
+                    Rozjaśnił mi również wiele kwestii związanych z zarządzaniem pamięcią w języku C.
+                </p>
+            </section>
+        </article>
+        
+        <aside class="project-nav">
+            <h3>Inne projekty</h3>
+            <ul>
+                <li><a href="project1.html">System zarządzania kinem</a></li>
+                <li><a href="project2.html">Chińskie szachy online</a></li>
+            </ul>
+        </aside>
+    </main>
+    
+    <footer>
+        <p>&copy; 2025 Łukasz Kuś </p>
+    </footer>
+</body>
+</html>
